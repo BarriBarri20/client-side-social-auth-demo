@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checking authentication...</title>
+</head>
+<body>
+  <div id="message">
+    <p><b>Message:</b> Checking authentication...</p>
+  </div>
+  <script>
+  var url = new URL(window.location.href);
+  var params = new URLSearchParams(url.search);
+
+  var code = params.get('code');
+  var provider = params.get('provider');
+
+  var endpoint;
+  if (provider === 'facebook') {
+      endpoint = "http://localhost:8000/api/auth/facebook/";
+  } else if (provider === 'google') {
+      endpoint = "http://localhost:8000/api/auth/google/";
+  } else {
+      console.error('Unsupported provider');
+  }
+
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", endpoint, true);
+  xhr.setRequestHeader("Content-Type", "application/json");
+  console.log(code);
+  xhr.send(JSON.stringify({ "code": code }));
+
+  xhr.onreadystatechange = function() {
+      console.log(xhr.status);
+      if (xhr.status === 200) {
+          document.getElementById("message").innerHTML = "<p><b>Message:</b> " + "Successfully logged in, You will be redirected to your welcome page" + "</p>";
+          localStorage.setItem('key', JSON.parse(xhr.responseText).key);
+          setTimeout(function() {
+              window.location.href = "http://localhost:3000/welcome";
+          }, 1000);
+      } else {
+        if (xhr.responseText) {
+          var response = JSON.parse(xhr.responseText);
+          console.log(response);
+          // you can here show the error to the user: 
+          document.getElementById("message").innerHTML = "<p><b>Error:</b> " + response.non_field_errors[0] + "</p>";
+        }
+    }
+  };
+
+  </script>
+  </body>
+</html>
