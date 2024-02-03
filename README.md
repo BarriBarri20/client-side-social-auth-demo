@@ -1,10 +1,10 @@
-# This repository is for a demo for social authentication
+# This repository is for a demo for social authentication using OAuth2.0
 
 You will need to run the backend server in order to test this project
 
 # You can only register with one provider, so if you have already with same email you will get an error
 
-# To run this client you will need to the package `serve`
+### To run this client you will need to the package `serve`
 ```bash
 serve -p 3000
 ```
