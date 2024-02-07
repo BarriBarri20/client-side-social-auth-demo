@@ -5,6 +5,13 @@ You will need to run the backend server in order to test this project
 # You can only register with one provider, so if you have already with same email you will get an error
 
 ### To run this client you will need to the package `serve`
+
+```bash
+npm install -g serve
+```
+
+Then you can run the client using the following command
+
 ```bash
 serve -p 3000
 ```
