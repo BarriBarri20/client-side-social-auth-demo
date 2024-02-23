@@ -2,6 +2,8 @@ var facebookLoginButton = document.getElementById('facebook-login');
 facebookLoginButton.addEventListener('click', processFacebookAuth);
 var googleLoginButton = document.getElementById('google-login');
 googleLoginButton.addEventListener('click', processGoogleAuth);
+var forgetPasswordButton = document.getElementById('forget-password');
+forgetPasswordButton.addEventListener('click', forgetPassword);
 
 function getFacebookAppId() {
     return new Promise(function(resolve, reject) {
@@ -56,3 +58,17 @@ function processGoogleAuth() {
         window.location.href = authUrl;
     });
 }
+
+function forgetPassword() {
+    var email = document.getElementById('email').value;
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'http://localhost:8000/api/auth/password/reset/', true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify({email: email}));
+    document.getElementById('message').value = "Password reset link has been sent to your email. You will be redirected to the reset password page in 3 seconds.";
+    setTimeout(function() {
+        window.location.href = 'http://localhost:3000/forgot-password-success';
+    }
+    , 3000);
+}
+
